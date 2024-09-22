@@ -301,7 +301,11 @@ class Source(object):
         else:
             # Handles cases where users can pass in their sector
             if type(self.usr_sec) == int:
-                arg = np.argwhere(sectors == self.usr_sec)[0]
+                try:
+                    arg = np.argwhere(sectors == self.usr_sec)[0]
+                except Exception as e:
+                    err_msg = f"Cannot find the target in sector {self.usr_sec}. Available sectors: {sectors}"
+                    raise ValueError(err_msg) from e
                 if len(arg) > 0:
                     self.sector = sectors[arg][0]
                     camera = cameras[arg][0]
